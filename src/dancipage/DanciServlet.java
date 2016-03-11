@@ -39,7 +39,20 @@ public class DanciServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		PrintWriter out = resp.getWriter();
-		out.println("Thank you for posting me your data!"); //TODO: post-password logic
+		String usernameFromForm = req.getParameter("username");
+		String passwordFromForm = req.getParameter("password");
+		if (passwords.containsKey(usernameFromForm) && passwords.get(usernameFromForm).equals(passwordFromForm)) {
+			Object usernameInSession = session.getAttribute("username");
+			if (usernameInSession != null && usernameInSession.equals(usernameFromForm)) {
+				warnUserAlreadyLoggedIn(out);
+			}
+			else {
+				session.setAttribute("username", usernameFromForm);
+				greetUser(out, usernameFromForm);
+			}
+		} else {
+			denyAccess(out);
+		}
 		//session.invalidate();
 		//session.setAttribute("username", "Danci");
 		out.close();
@@ -51,8 +64,14 @@ public class DanciServlet extends HttpServlet {
 		out.print(generateHTML(title, body));
 	}
 	
+	private void denyAccess(PrintWriter out) {
+		String title = "AccessDenied";
+		String body = "";
+		out.print(generateHTML(title, body));
+	}
+	
 	private void redirectUserToLogin(PrintWriter out) {
-		String title = "UnauthorizedAccess";
+		String title = "WhoAreYou";
 		String body = "";
 		out.print(generateHTML(title, body));
 	}
