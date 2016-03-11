@@ -72,34 +72,46 @@ public class DanciServlet extends HttpServlet {
 	private void greetUser(PrintWriter outp, String username) {
 		String title = "Profile";
 		String body = "<h1>Welcome, " + username + ". Have a nice day.</h1>\n"
-				+ "<p><form action=\"logout.html\">"
+				+ "<p><form action=\"logout.html\" method=\"GET\">"
 				+ "<input type=\"submit\" value=\"Logout\">"
-				+ "</form></p>\n";
+				+ "</form></p>\n"
+				+ "<p><a href=\"index.html\">main page</a></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
 	private void sayUserGoodbye(PrintWriter outp) {
 		String title = "Logout";
 		String body = "<h1>Good Bye.</h1>\n"
-				+ "<p>You have been logged out successfuly.</p>\n";
+				+ "<p>You have been logged out successfuly.</p>\n"
+				+ "<p><a href=\"index.html\">main page</a></p>\n"
+				+ "<p><a href=\"login.html\">login</a></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
 	private void denyAccess(PrintWriter outp) {
 		String title = "AccessDenied";
-		String body = "";
+		String body = "<h1>Access denied!</h1>\n"
+				+ "<p>Invalid user name or password.</p>\n"
+				+ "<p><a href=\"login.html\">retry</a></p>\n"
+				+ "<p><a href=\"index.html\">main page</a></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
 	private void redirectUserToLogin(PrintWriter outp) {
 		String title = "WhoAreYou";
-		String body = "";
+		String body = "<h1>Who are you?</h1>\n"
+				+ "<p>You have to be logged in to access this page.</p>\n"
+				+ "<p><a href=\"login.html\">login</a></p>\n"
+				+ "<p><a href=\"index.html\">main page</a></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
 	private void warnUserAlreadyLoggedIn(PrintWriter outp) {
 		String title = "AlreadyLoggedIn";
-		String body = "";
+		String body = "<h1>You are already logged in.</h1>\n"
+				+ "<p>Please, choose what you would like to do.</p>\n"
+				+ "<p><a href=\"profile.html\">view profile</a></p>\n"
+				+ "<p><a href=\"logout.html\">logout</a></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
