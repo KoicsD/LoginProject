@@ -27,7 +27,7 @@ public class DanciServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		Object username = session.getAttribute("username");
 		if (username != null && passwords.containsKey(username))
-			greetUser(out, (String)username);
+			executeCommand(session, out);
 		else
 			redirectUserToLogin(out);
 		out.close();
@@ -48,19 +48,38 @@ public class DanciServlet extends HttpServlet {
 			}
 			else {
 				session.setAttribute("username", usernameFromForm);
-				greetUser(out, usernameFromForm);
+				executeCommand(session, out);
 			}
 		} else {
 			denyAccess(out);
 		}
-		//session.invalidate();
-		//session.setAttribute("username", "Danci");
 		out.close();
+	}
+	
+	private void executeCommand(HttpSession session, PrintWriter out) {
+		switch (getInitParameter("command")) {
+		case "view":
+			greetUser(out, (String)session.getAttribute("username"));
+			break;
+		case "logout":
+			session.invalidate();
+			sayUserGoodbye(out);
+		}
 	}
 
 	private void greetUser(PrintWriter out, String username) {
 		String title = "Profile";
-		String body = "<h1>Welcome, " + username + ". Have a nice day.</h1>";
+		String body = "<h1>Welcome, " + username + ". Have a nice day.</h1>\n"
+				+ "<p><form action=\"logout.html\">"
+				+ "<input type=\"submit\" value=\"Logout\">"
+				+ "</form></p>\n";
+		out.print(generateHTML(title, body));
+	}
+	
+	private void sayUserGoodbye(PrintWriter out) {
+		String title = "Logout";
+		String body = "<h1>Good Bye.</h1>\n"
+				+ "<p>You have been logged out successfuly.</p>\n";
 		out.print(generateHTML(title, body));
 	}
 	

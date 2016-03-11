@@ -12,9 +12,25 @@
   <servlet>
     <servlet-name>view profile</servlet-name>
     <servlet-class>dancipage.DanciServlet</servlet-class>
+    <init-param>
+      <param-name>command</param-name>
+      <param-value>view</param-value>
+    </init-param>
+  </servlet>
+  <servlet>
+    <servlet-name>logout session</servlet-name>
+    <servlet-class>dancipage.DanciServlet</servlet-class>
+    <init-param>
+      <param-name>command</param-name>
+      <param-value>logout</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>view profile</servlet-name>
     <url-pattern>/profile.html</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>logout session</servlet-name>
+    <url-pattern>/logout.html</url-pattern>
   </servlet-mapping>
 </web-app>
