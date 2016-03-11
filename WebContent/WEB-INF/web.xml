@@ -9,4 +9,12 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <servlet-name>view profile</servlet-name>
+    <servlet-class>dancipage.DanciServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>view profile</servlet-name>
+    <url-pattern>/profile.html</url-pattern>
+  </servlet-mapping>
 </web-app>
