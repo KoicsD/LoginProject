@@ -54,10 +54,12 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+
 ### Eclipse ###
 .metadata
 bin/
 tmp/
+/build/
 *.tmp
 *.bak
 *.swp
@@ -87,3 +89,4 @@ local.properties
 .texlipse
 # STS (Spring Tool Suite)
 .springBeans
+
