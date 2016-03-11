@@ -24,13 +24,14 @@ public class DanciServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
-		PrintWriter out = resp.getWriter();
+		PrintWriter outp = resp.getWriter();
+		
 		Object username = session.getAttribute("username");
 		if (username != null && passwords.containsKey(username))
-			executeCommand(session, out);
+			executeCommand(session, outp);
 		else
-			redirectUserToLogin(out);
-		out.close();
+			redirectUserToLogin(outp);
+		outp.close();
 	}
 
 	@Override
@@ -38,80 +39,79 @@ public class DanciServlet extends HttpServlet {
 		HttpSession session = req.getSession();
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
-		PrintWriter out = resp.getWriter();
+		PrintWriter outp = resp.getWriter();
+		
 		String usernameFromForm = req.getParameter("username");
 		String passwordFromForm = req.getParameter("password");
+		Object usernameInSession = session.getAttribute("username");
 		if (passwords.containsKey(usernameFromForm) && passwords.get(usernameFromForm).equals(passwordFromForm)) {
-			Object usernameInSession = session.getAttribute("username");
 			if (usernameInSession != null && usernameInSession.equals(usernameFromForm)) {
-				warnUserAlreadyLoggedIn(out);
+				warnUserAlreadyLoggedIn(outp);
 			}
 			else {
 				session.setAttribute("username", usernameFromForm);
-				executeCommand(session, out);
+				executeCommand(session, outp);
 			}
 		} else {
-			denyAccess(out);
+			denyAccess(outp);
 		}
-		out.close();
+		outp.close();
 	}
 	
-	private void executeCommand(HttpSession session, PrintWriter out) {
+	private void executeCommand(HttpSession session, PrintWriter outp) {
 		switch (getInitParameter("command")) {
 		case "view":
-			greetUser(out, (String)session.getAttribute("username"));
+			greetUser(outp, (String)session.getAttribute("username"));
 			break;
 		case "logout":
 			session.invalidate();
-			sayUserGoodbye(out);
+			sayUserGoodbye(outp);
 		}
 	}
 
-	private void greetUser(PrintWriter out, String username) {
+	private void greetUser(PrintWriter outp, String username) {
 		String title = "Profile";
 		String body = "<h1>Welcome, " + username + ". Have a nice day.</h1>\n"
 				+ "<p><form action=\"logout.html\">"
 				+ "<input type=\"submit\" value=\"Logout\">"
 				+ "</form></p>\n";
-		out.print(generateHTML(title, body));
+		outp.print(generateHTML(title, body));
 	}
 	
-	private void sayUserGoodbye(PrintWriter out) {
+	private void sayUserGoodbye(PrintWriter outp) {
 		String title = "Logout";
 		String body = "<h1>Good Bye.</h1>\n"
 				+ "<p>You have been logged out successfuly.</p>\n";
-		out.print(generateHTML(title, body));
+		outp.print(generateHTML(title, body));
 	}
 	
-	private void denyAccess(PrintWriter out) {
+	private void denyAccess(PrintWriter outp) {
 		String title = "AccessDenied";
 		String body = "";
-		out.print(generateHTML(title, body));
+		outp.print(generateHTML(title, body));
 	}
 	
-	private void redirectUserToLogin(PrintWriter out) {
+	private void redirectUserToLogin(PrintWriter outp) {
 		String title = "WhoAreYou";
 		String body = "";
-		out.print(generateHTML(title, body));
+		outp.print(generateHTML(title, body));
 	}
 	
-	private void warnUserAlreadyLoggedIn(PrintWriter out) {
+	private void warnUserAlreadyLoggedIn(PrintWriter outp) {
 		String title = "AlreadyLoggedIn";
 		String body = "";
-		out.print(generateHTML(title, body));
+		outp.print(generateHTML(title, body));
 	}
 	
 	private String generateHTML(String title, String body) {
-		String html = "";
-		html += "<html>\n";
-		html += "<head>\n";
-		html += "<title>" + title + "</title>\n";
-		html += "</head>\n";
-		html += "<body>\n";
-		html += body;
-		html += "</body>\n";
-		html += "</html>\n";
-		return html;
+		return "<html>\n"
+				+ "<head>\n"
+				+ "<title>" + title + "</title>\n"
+				+ "</head>\n"
+				+ "<body>\n"
+				+ body
+				+ "</body>\n"
+				+ "</html>\n";
 	}
 	
 }
