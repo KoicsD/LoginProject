@@ -110,8 +110,12 @@ public class DanciServlet extends HttpServlet {
 		String title = "AlreadyLoggedIn";
 		String body = "<h1>You are already logged in.</h1>\n"
 				+ "<p>Please, choose what you would like to do.</p>\n"
-				+ "<p><a href=\"profile.html\">view profile</a></p>\n"
-				+ "<p><a href=\"logout.html\">logout</a></p>\n";
+				+ "<p><form action=\"profile.html\" method=\"GET\">"
+				+ "<input type=\"submit\" value=\"View Profile\">"
+				+ "</form></p>\n"
+				+ "<p><form action=\"logout.html\" method=\"GET\">"
+				+ "<input type=\"submit\" value=\"Logout\">"
+				+ "</form></p>\n";
 		outp.print(generateHTML(title, body));
 	}
 	
